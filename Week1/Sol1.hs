@@ -102,5 +102,22 @@ srtString [] = []
 srtString xs = lowval : ( srtString (removeFst lowval xs) ) where lowval = ordVal xs
 
 
+-- exercise 1.17
+-- following the rules:
+-- xs is shorter or equal length of ys
+-- 1: if xs is a prefix of ys, xs is a substring of ys,
+-- 2: if ys equals y:ys’ and xs is a substring of ys’, xs is a substring of ys,
+-- 3: nothing else is a substring of ys.
+
+-- test with:
+-- substring "sch" "schaap"
+-- substring "sch" "blaatschaap"
+-- substring "sch" "sc"
+
+substring :: String -> String -> Bool
+substring [] [] = True
+substring [] (y:ys) = False
+substring (x:xs) [] = False
+substring (x:xs) (y:ys) = (x==y) && (prefix xs ys) || (substring (x:xs) ys)
 
 
