@@ -72,4 +72,17 @@ count n (x:xs) | n == x		= 1 + (count n xs)
 
 -- exercise 1.14
 
+rep :: Char -> Int -> String
+rep c 0 = []
+rep c n = c:(rep c (n-1))
+
+blowup_n :: String -> Int -> String
+blowup_n [] n = []
+blowup_n (x:xs) n = (rep x n) ++ (blowup_n xs (n+1))
+
+blowup :: String -> String
+blowup [] = []
+blowup (x:xs) = [x] ++ (blowup_n xs 1)
+
+
 
