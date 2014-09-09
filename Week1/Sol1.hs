@@ -144,4 +144,9 @@ substring (x:xs) (y:ys) = (x==y) && (prefix xs ys) || (substring (x:xs) ys)
 lengths :: [[a]] -> [Int]
 lengths = map length
 
+-- exercise 1.21
+sumLengths :: [[a]] -> Int
+sumLengths xs = sum (lengths xs)
+
+
 
