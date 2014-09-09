@@ -3,6 +3,8 @@ module Sol1
 where 
 
 import GS
+import Data.Char
+
 -- exercise 1.4:
 --Yes, it will change the definition. suppose in the case of n = 49. Then saying that in case k^2 is equal to n,
 --n is the lowest divisor of itself, namely a prime number. which is not true. as 7^2 is the LD in this case.
@@ -89,6 +91,11 @@ blowup :: String -> String
 blowup [] = []
 blowup (x:xs) = [x] ++ (blowup_n xs 2)
 
+--another alternative:
+
+blowUp' :: String -> String
+blowUp' xs = concat[replicate (i+1) (xs!!i)|i<- [0..length(xs)-1]]
+
 -- exercise 1.15
 -- sorting of strings
 -- Should be the same as srtInts, but this time we deal with Strings / [Char]
@@ -105,6 +112,13 @@ ordVal (x:xs) = min x (ordVal xs)
 srtString :: [String] -> [String]
 srtString [] = []
 srtString xs = lowval : ( srtString (removeFst lowval xs) ) where lowval = ordVal xs
+
+
+--another alternative: (with toLower
+
+srtString' :: [String] -> [String]
+srtString' [] = []
+srtString' xs = m : srtString' (removeFst [map toLower (xs!!i)|i<-[0..length(xs)-1]] m) where m = minimum([map toLower (xs!!i)|i<-[0..length(xs)-1]])
 
 
 -- exercise 1.17
@@ -149,12 +163,6 @@ lengths = map length
 -- exercise 1.21
 sumLengths :: [[a]] -> Int
 sumLengths xs = sum (lengths xs)
-
--- exercise 1.24
--- ldp :: Integer -> Integer
--- ldp = ldpf primes1
-
--- It doesn't change the execution and it results, because primes1 is not taking any arguments and thus not necessarily taking in arguments in ldf to passing to primes1
 
 
 
