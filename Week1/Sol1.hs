@@ -4,6 +4,9 @@ where
 
 import GS
 -- exercise 1.4:
+--Yes, it will change the definition. suppose in the case of n = 49. Then saying that in case k^2 is equal to n,
+--n is the lowest divisor of itself, namely a prime number. which is not true. as 7^2 is the LD in this case.
+
 -- no, because LD equaling to N is by definition not prime?
 
 prime0 :: Integer -> Bool
