@@ -84,5 +84,23 @@ blowup :: String -> String
 blowup [] = []
 blowup (x:xs) = [x] ++ (blowup_n xs 2)
 
+-- exercise 1.15
+-- sorting of strings
+-- Should be the same as srtInts, but this time we deal with Strings / [Char]
+-- We could transform each char to Ord? (sort by ascii value?)
+
+
+-- http://hackage.haskell.org/package/base-4.7.0.1/docs/Data-List.html#v:sort
+-- ordVal can be anything, this is taken care by Ord a
+ordVal :: Ord a => [a] -> a
+ordVal [] = error "cannot sort empty"
+ordVal [x] = x
+ordVal (x:xs) = min x (ordVal xs)
+
+srtString :: [String] -> [String]
+srtString [] = []
+srtString xs = lowval : ( srtString (removeFst lowval xs) ) where lowval = ordVal xs
+
+
 
 
