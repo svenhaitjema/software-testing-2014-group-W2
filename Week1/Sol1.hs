@@ -120,4 +120,25 @@ substring [] (y:ys) = False
 substring (x:xs) [] = False
 substring (x:xs) (y:ys) = (x==y) && (prefix xs ys) || (substring (x:xs) ys)
 
+-- exercise 1.17
+
+-- 1. a [String] is expressed as: [ [Char] , [Char], [Char] ] or [[Char]]
+-- *Sol1> :t ["Foo", "Bar"]
+-- ["Foo", "Bar"] :: [[Char]]
+-- 2. (Bool, String) is expressed as: (Bool, [Char])
+-- *Sol1> :t (True, "Test")
+-- (True, "Test") :: (Bool, [Char])
+-- 3. *Sol1> :t [(True, "Testing")]
+-- [(True, "Testing")] :: [(Bool, [Char])] 
+-- 4. *Sol1> :t ([True, False, True], "Testing")
+-- ([True, False, True], "Testing") :: ([Bool], [Char])
+-- 5. 
+
+
+-- exercise 1.20
+-- *Sol1> lengths [["blaat", "schaap"], ["kooi"]]
+-- [2,1]
+lengths :: [[a]] -> [Int]
+lengths = map length
+
 
