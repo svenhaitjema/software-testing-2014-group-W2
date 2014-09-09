@@ -150,5 +150,11 @@ lengths = map length
 sumLengths :: [[a]] -> Int
 sumLengths xs = sum (lengths xs)
 
+-- exercise 1.24
+-- ldp :: Integer -> Integer
+-- ldp = ldpf primes1
+
+-- It doesn't change the execution and it results, because primes1 is not taking any arguments and thus not necessarily taking in arguments in ldf to passing to primes1
+
 
 
