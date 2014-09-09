@@ -6,11 +6,9 @@ import GS
 import Data.Char
 
 -- exercise 1.4:
---Yes, it will change the definition. suppose in the case of n = 49. Then saying that in case k^2 is equal to n,
---n is the lowest divisor of itself, namely a prime number. which is not true. as 7^2 is the LD in this case.
 
--- no, because LD equaling to N is by definition not prime?
-
+-- no, because once the iteration gets to a k that satisfies k^2 = n, it will be returned in the first guard, simply a divisor
+-- of n, and the 3nd guard will not even be reached.
 
 
 prime0 :: Integer -> Bool
