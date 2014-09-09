@@ -9,6 +9,8 @@ import GS
 
 -- no, because LD equaling to N is by definition not prime?
 
+
+
 prime0 :: Integer -> Bool
 prime0 n | n < 1 = error "not a positive integer"
 		| n == 1 = False
