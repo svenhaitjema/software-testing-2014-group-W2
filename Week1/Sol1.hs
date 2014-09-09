@@ -37,4 +37,39 @@ listMax [] = error "empty list"
 listMax [x] = x
 listMax (x:xs) = max x (listMax xs)
 
-removeFst
+
+
+-- exercise 1.10
+
+
+-- infered from the gchi:
+-- *Sol1> :t removeFst 3 [1,4,6,7,8]
+-- removeFst 3 [1,4,6,7,8] :: (Num t, Eq t) => [t]
+
+removeFst :: Eq t => t ->  [t] -> [t]
+removeFst m [] = []
+removeFst m (x:xs) | m == x 	= xs
+					| otherwise = x: (removeFst m xs)
+
+-- exercise 1.11 -- from book
+
+srtInts :: [Int] -> [Int]
+srtInts [] = []
+srtInts xs = m : (srtInts (removeFst m xs)) where m = mnmInt xs
+
+srtInts' :: [Int] -> [Int]
+srtInts' [] = []
+srtInts' xs = let
+				m = mnmInt xs
+				in m : (srtInts' (removeFst m xs))
+				
+-- exercise 1.13
+-- usage: count 'a' "Haaaaaskell"
+count :: Char -> String -> Int
+count n [] = 0
+count n (x:xs) | n == x		= 1 + (count n xs)
+				| otherwise = (count n xs)
+
+-- exercise 1.14
+
+
