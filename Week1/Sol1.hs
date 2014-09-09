@@ -82,7 +82,7 @@ blowup_n (x:xs) n = (rep x n) ++ (blowup_n xs (n+1))
 
 blowup :: String -> String
 blowup [] = []
-blowup (x:xs) = [x] ++ (blowup_n xs 1)
+blowup (x:xs) = [x] ++ (blowup_n xs 2)
 
 
 
