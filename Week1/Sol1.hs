@@ -7,8 +7,8 @@ import Data.Char
 
 -- exercise 1.4:
 
--- no, because once the iteration gets to a k that satisfies k^2 = n, it will be returned in the first guard, simply a divisor
--- of n, and the 3nd guard will not even be reached.
+-- no, because once the recursive iteration gets to a k that satisfies k^2 = n, k will be returned in the first guard, simply as 
+-- a divisor of n, and the 2nd guard will not even be reached.
 
 
 prime0 :: Integer -> Bool
