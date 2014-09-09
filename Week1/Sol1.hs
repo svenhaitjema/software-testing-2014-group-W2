@@ -10,10 +10,6 @@ import GS
 -- no, because LD equaling to N is by definition not prime?
 
 
---It would not affect the program output,
---but it would reduce one computational step.
---Continuing after k^2==n is not needed since the divisor funtions mirror after it.
-
 
 prime0 :: Integer -> Bool
 prime0 n | n < 1 = error "not a positive integer"
