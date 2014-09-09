@@ -164,3 +164,6 @@ sumLengths xs = sum (lengths xs)
 
 
 
+-- 1.24
+-- Nothing will change, as the n is implicitly expressed in the function type that an integer is expected,
+--even if it is not written explicitly in the function definition
