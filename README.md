@@ -6,3 +6,4 @@ Exercises repository of:
 * Amir Cohen
 * Sven Haitjema
 * Wai Yi Leung
+* Sinan Ceylan
