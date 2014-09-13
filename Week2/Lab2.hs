@@ -37,3 +37,9 @@ removeItem :: Eq a => a -> [a] -> [a]
 removeItem _ [] = []
 removeItem x (y:ys) | x == y = removeItem x ys
                     | otherwise = y : removeItem x ys
+                    
+isDerangement :: Eq a => [a] -> [a] -> Bool
+isDerangement [] [] = True
+isDerangement (x:xs) (y:ys) | x == y = False
+	| otherwise = isDerangement xs ys
+                    
