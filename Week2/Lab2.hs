@@ -40,7 +40,7 @@ removeItem x (y:ys) | x == y = removeItem x ys
                     
 permuList :: Eq a => [a] -> [[a]]
 permuList [] = [[]]
-permuList x  = [ p:ps | p <- x, ps <- perms (x\\[p]) ]
+permuList xs  = [ p:ps | p <- xs, ps <- perms (xs\\[p]) ]
 
 isDerangement :: Eq a => [a] -> [a] -> Bool
 isDerangement [] [] = True
