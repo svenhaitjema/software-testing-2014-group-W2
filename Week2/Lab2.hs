@@ -47,7 +47,7 @@ isDerangement [] [] = True
 isDerangement (x:xs) (y:ys) | x == y = False
 	| otherwise = isDerangement xs ys
 
-deran (Enum a, Eq a, Num a) => [[a]]
+deran (Enum a, Eq a, Num a) => a -> [[a]]
 deran n = [j|j<-xs,and(zipWith(/=) x j)] where (x:xs) = perms[0..n-1]
 
 -- another alternative:
