@@ -1,0 +1,52 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\b\fs28 \cf0 TEST REPORT ISPERMUTATION FUNCTION\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\b0\fs24 \cf0 In order to check the correctness of the isPermutation function we have tested some cases. There are some \'91rules\'92 when it comes to permutation. We have handled these as cases in our test.\
+\
+ghci Lab2.hs\
+\
+Case 1:\
+Empty list permutations\
+isPermutation [] []\
+\
+Expected result: 	True\
+Result: 			True\
+\
+Case 2: \
+Permutation same order\
+isPermutation [1,2,3] [1,2,3]\
+\
+Expected result: 	True\
+Result: 			True\
+\
+Case 3: \
+Permutation different order\
+isPermutation [1,2,3] [3,2,1]\
+\
+Expected result: 	True\
+Result: 			True\
+\
+Case 4:\
+No permutation\
+isPermutation [1,2,3] [5,4,9]\
+\
+Expected result: 	False\
+Result: 			False\
+\
+Case 5:\
+Length difference\
+isPermutation [1,2,3] [1,2]\
+\
+Expected result: 	False\
+Result: 			False\
+\
+\
+Avg time spent on assignment: 4,5 hrs.\
+}
