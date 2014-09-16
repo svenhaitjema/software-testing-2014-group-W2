@@ -47,7 +47,12 @@ isDerangement [] [] = True
 isDerangement (x:xs) (y:ys) | x == y = False
 	| otherwise = isDerangement xs ys
 
-testDeran1 :: isDerangement [] []
+testDeran1 :: isDerangement [] [] == True
+testDeran2 = isDerangement [1,2] [2] == False
+testDeran3 = isDerangement [2] [1,2] == False
+testDeran4 = isDerangement [2] [1,1,1] == False
+testDeran5 = isDerangement [1,1,2] [2,1,1] == False
+testDeran5 = isDerangement [1,2,3] [2,1,3] == True
 
 
 --deran (Enum a, Eq a, Num a) => a -> [[a]]
