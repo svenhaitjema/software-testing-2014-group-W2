@@ -47,6 +47,15 @@ isDerangement [] [] = True
 isDerangement (x:xs) (y:ys) | x == y = False
 	| otherwise = isDerangement xs ys
 
+testDeran1 :: isDerangement [] [] == True
+testDeran2 = isDerangement [1,2] [2] == False
+testDeran3 = isDerangement [2] [1,2] == False
+testDeran4 = isDerangement [2] [1,1,1] == False
+testDeran5 = isDerangement [1,1,2] [2,1,1] == False
+testDeran5 = isDerangement [1,2,3] [2,1,3] == True
+testDeran6 = isDerangement [1,2,3] [3,2,1] == isPermutation [1,2,3] [3,2,1]
+
+
 --deran (Enum a, Eq a, Num a) => a -> [[a]]
 deran n = [j|j<-xs,and(zipWith(/=) x j)] where (x:xs) = perms[0..n-1]
 
