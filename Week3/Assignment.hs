@@ -36,3 +36,8 @@ equi1 = Dsj[Neg p, q]       -- equiv equi1 equi2 returns True
 equi2 = Neg(Cnj[p, Neg q])  -- equiv equi2 equi1 returns True
 
 --Avg time spend 3 hours.
+
+--ASSIGNMENT 2
+
+cnf :: Form -> Form
+cnf a = nnf(arrowfree(a))
