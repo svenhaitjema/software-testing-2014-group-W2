@@ -39,5 +39,12 @@ equi2 = Neg(Cnj[p, Neg q])  -- equiv equi2 equi1 returns True
 
 --ASSIGNMENT 2
 
+callcnf :: Form -> Form
+callcnf a =  cnf (nnf (arrowfree (a)))
+
 cnf :: Form -> Form
-cnf a = nnf(arrowfree(a))
+cnf a | (Prop a) = Prop a
+      | (Neg (Prop a)) = Neg (Prop a)
+      | otherwise = Prop a
+
+-- CNF does not work like it should.
