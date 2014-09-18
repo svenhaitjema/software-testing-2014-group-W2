@@ -45,8 +45,7 @@ callcnf a =  cnf (nnf (arrowfree (a)))
 cnf :: Form -> Form
 cnf (Prop x) = Prop x
 cnf (Neg y) = Neg (cnf y)
---cnf (Cnj (x:xs)) = Cnj[cnf(x),(map( \l -> cnf(l)) xs)]
-cnf (Cnj (x:xs)) = Cnj[cnf(x), cnf(x)]
+cnf (Cnj (x:xs)) = Cnj((cnf x):(map cnf xs))
 
 --cnf a | (Prop a) = Prop a
 --      | (Neg (Prop a)) = Neg (Prop a)
