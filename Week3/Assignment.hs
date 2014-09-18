@@ -43,8 +43,13 @@ callcnf :: Form -> Form
 callcnf a =  cnf (nnf (arrowfree (a)))
 
 cnf :: Form -> Form
-cnf a | (Prop a) = Prop a
-      | (Neg (Prop a)) = Neg (Prop a)
-      | otherwise = Prop a
+cnf (Prop x) = Prop x
+cnf (Neg y) = Neg (cnf y)
+--cnf (Cnj (x:xs)) = Cnj[cnf(x),(map( \l -> cnf(l)) xs)]
+cnf (Cnj (x:xs)) = Cnj[cnf(x), cnf(x)]
+
+--cnf a | (Prop a) = Prop a
+--      | (Neg (Prop a)) = Neg (Prop a)
+--      | otherwise = Prop a
 
 -- CNF does not work like it should.
