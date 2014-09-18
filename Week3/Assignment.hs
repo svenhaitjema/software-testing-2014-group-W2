@@ -46,9 +46,12 @@ cnf :: Form -> Form
 cnf (Prop x) = Prop x
 cnf (Neg y) = Neg (cnf y)
 cnf (Cnj (x:xs)) = Cnj((cnf x):(map cnf xs))
+cnf (Dsj (y:ys)) | length ys > 0 = (dist (cnf y) (cnf (Dsj ys)))
+                 | otherwise = cnf y
 
---cnf a | (Prop a) = Prop a
---      | (Neg (Prop a)) = Neg (Prop a)
---      | otherwise = Prop a
+dist :: Form -> Form -> Form
+dist (Cnj (x:xs)) y = Cnj((dist x y):(map (dist y) xs))
+dist x (Cnj (y:ys)) = Cnj((dist y x):(map (dist x) ys))
+dist x y = Dsj[x,y]
 
--- CNF does not work like it should.
+--Avg time spend 4 hours.
