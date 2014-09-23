@@ -129,30 +129,7 @@ cnf2cls( callcnf(Cnj[Dsj[p,q],q,r]) )
 
 
 
---type Clause = [Int]
---type Clauses = [Clause]
 
---testprop = Prop 3
---testpropcnf = cnf (Neg(testprop))
-
---cnf2cls :: Form -> Clauses
---cnf2cls (Prop x) = [ [x] ] -- base clause, just one property.    Amir: seems legit. How would the Neg(Prop x) work do 
--- you think?   I thouht initially: cnf2cls (Neg y) = Neg (cnf2cls y).
--- The return type of Neg is still a Form, this can not work as expected.. Do you know how to tranform a Form into a Int?
-
--- cnf2cls (Cnj (x:xs)) = [ [x]:(map cnf2cls Cnj xs) ] -- base clause, just one property
---cnf2cls (Cnj (x:xs)) = [ [x] : map( cnf2cls xs ) ]
-
-
--- Amir: I think Dsj should work on similar principle, namely: 
---        -- cnf2cls (Dsj (x:xs)) = [(cnf2cls x):(map cnf2cls xs)]. Something like this id say. (Or was this 
--- what you meant with the following line?**
-
-
--- **cnf2cls (Cnj (x:xs)) = (cnf x) : cnf2cls xs
-
--- cnf2cls testprop
--- cnf2cls testpropcnf
 
 
 
