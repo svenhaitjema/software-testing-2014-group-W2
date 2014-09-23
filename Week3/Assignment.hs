@@ -77,10 +77,10 @@ cnf2cls (Prop x) = [ [x] ] -- base clause, just one property.    Amir: seems leg
 
 
 -- Amir: I think Dsj should work on similar principle, namely: 
---        -- cnf2cls (Dsj (x:xs)) = [(cnf2cls x):(map cnf2cls xs)]. Something like this id say
+--        -- cnf2cls (Dsj (x:xs)) = [(cnf2cls x):(map cnf2cls xs)]. Something like this id say. (Or was this what you meant --- with the following line?**
 
 
--- cnf2cls (Cnj (x:xs)) = (cnf x) : cnf2cls xs
+-- **cnf2cls (Cnj (x:xs)) = (cnf x) : cnf2cls xs
 
 -- cnf2cls testprop
 -- cnf2cls testpropcnf
