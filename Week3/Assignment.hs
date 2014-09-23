@@ -66,11 +66,29 @@ dist x y = Dsj[x,y]
 type Clause = [Int]
 type Clauses = [Clause]
 
-testprop = Prop 3
-testpropcnf = cnf (Neg(testprop))
+inv :: Form -> Int
+inv (Prop x) = x
+int (Neg x) = inv x
 
 cnf2cls :: Form -> Clauses
-cnf2cls (Prop x) = [ [x] ] -- base clause, just one property.    Amir: seems legit. How would the Neg(Prop x) work do 
+cnf2cls (Prop x) = [ [x] ] 
+cnf2cls (Neg x) = [ [(inv(x) `div` (-1))] ]
+
+cnf2cls (Cnj (x:xs)) | length(xs) > 0 = cnf2cls(x)  ++ cnf2cls(Cnj(xs))
+	     | otherwise = cnf2cls(x)
+
+cnf2cls (Dsj (x:xs)) | length(xs) > 0 = [concat(cnf2cls(x) ++ cnf2cls(Dsj(xs)))]
+	     | otherwise = cnf2cls(x)
+
+
+--type Clause = [Int]
+--type Clauses = [Clause]
+
+--testprop = Prop 3
+--testpropcnf = cnf (Neg(testprop))
+
+--cnf2cls :: Form -> Clauses
+--cnf2cls (Prop x) = [ [x] ] -- base clause, just one property.    Amir: seems legit. How would the Neg(Prop x) work do 
 -- you think?   I thouht initially: cnf2cls (Neg y) = Neg (cnf2cls y).
 -- The return type of Neg is still a Form, this can not work as expected.. Do you know how to tranform a Form into a Int?
 
