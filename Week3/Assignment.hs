@@ -84,6 +84,51 @@ cnf2cls (Dsj (x:xs)) | length(xs) > 0 = [concat(cnf2cls(x) ++ cnf2cls(Dsj(xs)))]
 	     | otherwise = cnf2cls(x)
 
 
+-- Assignment 4
+-- avg time spent: 6 hrs.
+
+-- First thing to tackle is: taking in a Property x, single element
+-- should return a base Clauses with just 1 Clause in the list
+
+-- Second: convert the Form into Int 
+-- The Prop on valuation, gives back a Int
+-- The Neg does the same, this is achieved by calling the Prop of it.
+
+-- Lastly, the multi element Forms like Cnj and Dsj
+-- This sounds like a recursive function which traverses till the last node of
+-- the tree, we map the elements from the Cnj and Dsj functions and 
+-- examine each of the elements on its own.
+-- 
+
+-- Testing the `cnf2cls` function
+-- During development, the following base test were defined:
+
+-- cont1 = Cnj[Neg p, p]
+-- ent1 = Cnj[Neg p, q]
+cnj_pq = Cnj[p, q, p]
+djj = Dsj[q, Neg r,q]
+
+t1 = cnf (Neg (cnf p))
+t2 = cnf q
+t3 = cnf cont1
+t4 = cnf cnj_pq
+t5 = djj
+
+-- Testing procedure:
+-- cnf2cls was called using the following, if it didn't complain about
+-- not able to run, the test was successfull.
+-- Return values were checked manually
+
+cnf2cls t1
+cnf2cls t2
+cnf2cls t3
+cnf2cls t4
+cnf2cls t5
+cnf2cls( callcnf(Cnj[Dsj[p,q],q,r]) )
+
+
+
+
 --type Clause = [Int]
 --type Clauses = [Clause]
 
