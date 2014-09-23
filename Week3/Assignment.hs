@@ -72,6 +72,7 @@ testpropcnf = cnf (Neg(testprop))
 cnf2cls :: Form -> Clauses
 cnf2cls (Prop x) = [ [x] ] -- base clause, just one property.    Amir: seems legit. How would the Neg(Prop x) work do 
 -- you think?   I thouht initially: cnf2cls (Neg y) = Neg (cnf2cls y).
+-- The return type of Neg is still a Form, this can not work as expected.. Do you know how to tranform a Form into a Int?
 
 -- cnf2cls (Cnj (x:xs)) = [ [x]:(map cnf2cls Cnj xs) ] -- base clause, just one property
 --cnf2cls (Cnj (x:xs)) = [ [x] : map( cnf2cls xs ) ]
