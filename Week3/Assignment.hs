@@ -55,3 +55,33 @@ dist x (Cnj (y:ys)) = Cnj((dist y x):(map (dist x) ys))
 dist x y = Dsj[x,y]
 
 --Avg time spend 4 hours.
+
+
+
+
+
+-- Assignment 4
+-- avg time spent: 6 hrs.
+
+type Clause = [Int]
+type Clauses = [Clause]
+
+testprop = Prop 3
+testpropcnf = cnf (Neg(testprop))
+
+cnf2cls :: Form -> Clauses
+cnf2cls (Prop x) = [ [x] ] -- base clause, just one property
+-- cnf2cls (Cnj (x:xs)) = [ [x]:(map cnf2cls Cnj xs) ] -- base clause, just one property
+--cnf2cls (Cnj (x:xs)) = [ [x] : map( cnf2cls xs ) ]
+
+-- cnf2cls (Cnj (x:xs)) = (cnf x) : cnf2cls xs
+
+-- cnf2cls testprop
+-- cnf2cls testpropcnf
+
+
+
+
+
+
+
