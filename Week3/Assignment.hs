@@ -56,7 +56,10 @@ dist x y = Dsj[x,y]
 
 --Avg time spend 4 hours.
 
+-- Assignment 3
 
+testCNF :: Int -> IO ()
+testCNF n = testForms n (\f -> equiv f  (callcnf f))
 
 
 
