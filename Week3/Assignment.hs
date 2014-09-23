@@ -70,9 +70,15 @@ testprop = Prop 3
 testpropcnf = cnf (Neg(testprop))
 
 cnf2cls :: Form -> Clauses
-cnf2cls (Prop x) = [ [x] ] -- base clause, just one property
+cnf2cls (Prop x) = [ [x] ] -- base clause, just one property.    Amir: seems legit. How would the Neg(Prop x) work do you think?
+
 -- cnf2cls (Cnj (x:xs)) = [ [x]:(map cnf2cls Cnj xs) ] -- base clause, just one property
 --cnf2cls (Cnj (x:xs)) = [ [x] : map( cnf2cls xs ) ]
+
+
+-- Amir: I think Dsj should work on similar principle, namely: 
+--        -- cnf2cls (Dsj (x:xs)) = [(cnf2cls x):(map cnf2cls xs)]. Something like this id say
+
 
 -- cnf2cls (Cnj (x:xs)) = (cnf x) : cnf2cls xs
 
