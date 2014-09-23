@@ -126,7 +126,9 @@ cnf2cls t4
 cnf2cls t5
 cnf2cls( callcnf(Cnj[Dsj[p,q],q,r]) )
 
-
+-- Additionally, a random Formula generator has been used to test the function cnf2cls. 
+-- Similar to the function from the slides `testForms` and `getRndF`, we created a function
+-- generating Formulas including the elements: Neg,Cnj,Dsj and single Prop.
 
 
 
