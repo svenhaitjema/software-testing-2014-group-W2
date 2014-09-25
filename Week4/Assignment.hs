@@ -55,7 +55,11 @@ randomSet2 a b = do
 
 --2.
 --Sinan:
---Amir:
+--Amir: 
+  --set union:
+setUnion :: (Ord a) => Set a -> Set a -> Set a
+setUnion (Set c ) (Set s) = list2set(nub(c ++ s))
+
 --Sven:
 --Wai Yi:
 
