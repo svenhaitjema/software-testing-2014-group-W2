@@ -23,6 +23,8 @@ getRandomSet i s | isEmpty(s) = do
 
 
 --       Jongens, bekijk even de code wat ik hierhoven heb. Volgens mij zit ik er heel dichtbij, maar is dit nog niet helemaal goed.
+--	Amir: Sinan, het lijkt me dat t lastig wordt om een IO (a) te manipuleren op zo'n manier. Er is een speciale library 
+-- 	dat veel aanbiedt mbt randoms: kijk hier - http://learnyouahaskell.com/input-and-output#randomness
 
 --Amir:
 -- version with random range with both barriers default smaller than 300
