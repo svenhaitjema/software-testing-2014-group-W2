@@ -60,6 +60,11 @@ randomSet2 a b = do
 setUnion :: (Ord a) => Set a -> Set a -> Set a
 setUnion (Set c ) (Set s) = list2set(nub(c ++ s))
 
+setDifference :: (Ord a) => Set a -> Set a -> Set a
+setDifference (Set []) set2 = Set []
+setDifference (Set (x:xs)) set2 | inSet x set2 = setDifference (Set xs) set2
+    | otherwise = setUnion (Set [x]) (setDifference (Set xs) (set2))
+
 --Sven:
 --Wai Yi:
 
