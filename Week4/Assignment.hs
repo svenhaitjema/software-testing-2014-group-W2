@@ -76,6 +76,13 @@ randomSet2 a b = do
     return (list2set(take n (randomRs (a,b) (mkStdGen g))))
 
 --Opdracht 4.
+-- INTERSECTION
+
+setIntersection :: (Ord a) => Set a -> Set a -> Set a
+setIntersection (Set []) set2 = Set []
+setIntersection (Set (x:xs)) set2 | inSet x set2 = insertSet2 (Set [x]) (setIntersection (Set xs) (set2))
+    | otherwise = setIntersection (Set xs) set2
+
 --UNION
     setUnion :: (Ord a) => Set a -> Set a -> Set a
 setUnion (Set c ) (Set s) = list2set(nub(c ++ s))
