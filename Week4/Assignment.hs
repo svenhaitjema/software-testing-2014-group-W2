@@ -79,9 +79,9 @@ randomSet2 a b = do
 -- INTERSECTION
 
 setIntersection :: (Ord a) => Set a -> Set a -> Set a
-setIntersection (Set []) set2 = Set []
-setIntersection (Set (x:xs)) set2 | inSet x set2 = setUnion (Set [x]) (setIntersection (Set xs) (set2))
-    | otherwise = setIntersection (Set xs) set2
+setIntersection (Set []) (Set s) = Set []
+setIntersection (Set (x:xs)) (Set s) | inSet x (Set s) = setUnion (Set [x]) (setIntersection (Set xs) (Set s))
+    | otherwise = setIntersection (Set xs) (Set s)
 
 --UNION
     setUnion :: (Ord a) => Set a -> Set a -> Set a
@@ -89,6 +89,6 @@ setUnion (Set c ) (Set s) = list2set(nub(c ++ s))
 
 --DIFFERENCE
 setDifference :: (Ord a) => Set a -> Set a -> Set a
-setDifference (Set []) set2 = Set []
-setDifference (Set (x:xs)) set2 | inSet x set2 = setDifference (Set xs) set2
-    | otherwise = setUnion (Set [x]) (setDifference (Set xs) (set2))
+setDifference (Set []) (Set s) = Set []
+setDifference (Set (x:xs)) (Set s) | inSet x (Set s) = setDifference (Set xs) (Set s)
+    | otherwise = setUnion (Set [x]) (setDifference (Set xs) (Set s))
