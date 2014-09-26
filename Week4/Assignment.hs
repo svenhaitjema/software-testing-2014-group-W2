@@ -80,7 +80,7 @@ randomSet2 a b = do
 
 setIntersection :: (Ord a) => Set a -> Set a -> Set a
 setIntersection (Set []) set2 = Set []
-setIntersection (Set (x:xs)) set2 | inSet x set2 = insertSet2 (Set [x]) (setIntersection (Set xs) (set2))
+setIntersection (Set (x:xs)) set2 | inSet x set2 = setUnion (Set [x]) (setIntersection (Set xs) (set2))
     | otherwise = setIntersection (Set xs) set2
 
 --UNION
