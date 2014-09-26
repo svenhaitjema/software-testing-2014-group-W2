@@ -84,7 +84,7 @@ setIntersection (Set (x:xs)) (Set s) | inSet x (Set (sort s)) = setUnion (Set [x
     | otherwise = setIntersection (Set xs) (Set s)
 
 --UNION
-    setUnion :: (Ord a) => Set a -> Set a -> Set a
+setUnion :: (Ord a) => Set a -> Set a -> Set a
 setUnion (Set c ) (Set s) = list2set(nub(c ++ s))
 
 --DIFFERENCE
