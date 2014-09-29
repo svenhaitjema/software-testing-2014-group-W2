@@ -92,3 +92,7 @@ setDifference :: (Ord a) => Set a -> Set a -> Set a
 setDifference (Set []) (Set s) = Set []
 setDifference (Set (x:xs)) (Set s) | inSet x (Set (sort s)) = setDifference (Set xs) (Set s)
     | otherwise = setUnion (Set [x]) (setDifference (Set xs) (Set s))
+
+trClos :: Ord a => [(a,a)] -> [(a,a)]
+trClos x | x == nub(x ++ (x @@ x)) = sort(x)
+	| otherwise = trClos (nub (x ++ (x @@ x)))
