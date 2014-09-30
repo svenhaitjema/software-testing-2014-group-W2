@@ -110,6 +110,6 @@ lenSet :: (Ord a) => Set a-> Int
 lenSet (Set []) = 0
 lenSet (Set (x:xs))= 1 + lenSet (Set xs)
 
--- quickCheck cuickVerif
+-- quickCheck quickVerif
 
 -- +++ OK, passed 100 tests
