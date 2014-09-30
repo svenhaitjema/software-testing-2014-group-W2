@@ -1,7 +1,6 @@
 module Assignment
 
 where
-
 import Test.QuickCheck
 import System.Random
 import Data.List
@@ -94,6 +93,16 @@ setDifference (Set (x:xs)) (Set s) | inSet x (Set (sort s)) = setDifference (Set
     | otherwise = setUnion (Set [x]) (setDifference (Set xs) (Set s))
 
 --OPDRACHT 5.
+type Rel a = [(a,a)]
+infixr 5 @@
+(@@) :: Eq a => Rel a -> Rel a -> Rel a
+r @@ s = nub [ (x,z) | (x,y) <- r, (w,z) <- s, y == w ]
+
 trClos :: Ord a => [(a,a)] -> [(a,a)]
 trClos x | x == nub(x ++ (x @@ x)) = sort(x)
 	| otherwise = trClos (nub (x ++ (x @@ x)))
+
+--Opdracht 6
+-- See Tests.hs and run with:
+-- $ runhaskell Tests.hs
+
