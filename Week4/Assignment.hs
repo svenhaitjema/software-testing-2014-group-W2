@@ -112,7 +112,11 @@ main = hspec $ do
         trClos x == giveTrC (x)
     it "includes all elements from input in the output" $ do
       property $ \x -> 
-      	all (==True) (vfr (nub(x)))
+      	all (==True) (verif (nub(x)))
+    it "returns output with more or same amount of unique elements than the input" $ do
+      property $ \x ->
+        length(nub(x)) <= length(giveTrC (x))
+
 
 
 
