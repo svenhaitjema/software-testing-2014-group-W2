@@ -55,6 +55,39 @@ setDifference (Set []) (Set s) = Set []
 setDifference (Set (x:xs)) (Set s) | inSet x (Set (sort s)) = setDifference (Set xs) (Set s)
     | otherwise = setUnion (Set [x]) (setDifference (Set xs) (Set s))
 
+ioSetIntersection :: Set Int -> Set Int -> IO (Set Int)
+ioSetIntersection n p = do
+        return (setIntersection (n) (p))       
+       
+lenSet :: (Ord a) => Set a-> Int
+lenSet (Set []) = 0
+lenSet (Set (x:xs))= 1 + lenSet (Set xs)       
+       
+doTest :: Int -> IO (Bool)
+doTest n = do
+        fs <- (randomSet2 0 n)
+        putStr "First generated set: "
+        print(fs)
+        ss <- (randomSet2 0 n)
+        putStr "Second generated set: "
+        print(ss)
+        iss <- (ioSetIntersection fs ss)
+        putStr "Intersection"
+        print(iss)
+        return ((subSet iss fs) && (subSet iss fs) && ((lenSet iss) <= (lenSet fs)) && ((lenSet iss) <= (lenSet ss)) )
+       
+doLotsOfTests :: Int -> Int -> IO ()
+doLotsOfTests n p = do
+    if (p==0) then print("All tests passed")
+        else do
+        t <- doTest n  
+        if (t) then do
+                print("Test Passed")
+                (doLotsOfTests n (p-1))
+        else print("Test failed")
+
+
+
 --OPDRACHT 5.
 type Rel a = [(a,a)]
 infixr 5 @@
