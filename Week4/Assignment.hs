@@ -81,15 +81,18 @@ main = hspec $ do
         length(nub(x)) <= length(giveTrC (x))
 
 
-
-
+verif :: Rel Int -> [Bool] -- Rel Int
+verif [] = []
+verif (x:xs) = [elem x (trClos(x:xs))] ++ (verif xs)
 
 --Opdracht 7
 
 -- The random verification method used in the HSpec
-verif :: Rel Int -> [Bool] -- Rel Int
-verif [] = []
-verif (x:xs) = [elem x (trClos(x:xs))] ++ (verif xs)
+
+quickVerif :: Rel Int -> Property -- consumable by quickCheck
+quickVerif x =
+	property $ -- not(elem False 
+		all (==True) (verif (nub(x)))-- ) -- == False
 
 lenSet :: (Ord a) => Set a-> Int
 lenSet (Set []) = 0
