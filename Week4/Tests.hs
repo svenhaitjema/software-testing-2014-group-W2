@@ -9,12 +9,6 @@ import Assignment
 
 main = hspec testtrClos
 
-verif :: Rel Int -> [Bool] -- Rel Int
-verif [] = []
-verif (x:xs) = [elem x (trClos(x:xs))] ++ (verif xs)
-
-
-
 testtrClos = describe "trClos" $ do
     it "Following assignment" $ do
         (trClos [(1,2),(2,3),(3,4)] == [(1,2),(1,3),(1,4),(2,3),(2,4),(3,4)])

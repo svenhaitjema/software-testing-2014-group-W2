@@ -106,3 +106,15 @@ trClos x | x == nub(x ++ (x @@ x)) = sort(x)
 -- See Tests.hs and run with:
 -- $ runhaskell Tests.hs
 
+
+--Opdracht 7
+
+-- The random verification method used in the HSpec
+verif :: Rel Int -> [Bool] -- Rel Int
+verif [] = []
+verif (x:xs) = [elem x (trClos(x:xs))] ++ (verif xs)
+
+
+
+
+
