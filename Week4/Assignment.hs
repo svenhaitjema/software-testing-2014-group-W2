@@ -6,43 +6,6 @@ import System.Random
 import Data.List
 import SetOrd
 
---Opdracht 1.
---Sinan:
---    -
---    -
---    -
---Amir:
---    -
---    -
---    -
---Sven:
---    -
---    -
---    -
---Wai Yi:
---    -
---    -
---    -
-
---Opdracht 2.
---Sinan:
---    -
---    -
---    -
---Amir:
---    -
---    -
---    -
---Sven:
---    -
---    -
---    -
---Wai Yi:
---    -
---    -
---    -
-
---Opdracht 3.
 getRandomInt :: Int -> IO Int
 getRandomInt n = getStdRandom (randomR (0,n))
 
