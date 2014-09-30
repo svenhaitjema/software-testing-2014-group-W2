@@ -105,6 +105,16 @@ trClos x | x == nub(x ++ (x @@ x)) = sort(x)
 --Opdracht 6
 -- See Tests.hs and run with:
 -- $ runhaskell Tests.hs
+main = hspec $ do
+  describe "trClos" $ do
+    it "gives the transitive closure of binary relations" $ do 
+      property $ \x -> 
+        trClos x == giveTrC (x)
+    it "includes all elements from input in the output" $ do
+      property $ \x -> 
+      	all (==True) (vfr (nub(x)))
+
+
 
 
 --Opdracht 7
