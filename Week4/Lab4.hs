@@ -36,7 +36,7 @@ take5 = take 5 . filter (`elem` ['a'..'e'])
 
 
 instance Arbitrary (Rel Int) where
- arbitrary = do
-  x <- choose (0,5)
-  y <- choose (0,5)
-  return [(x,y)|i<-[0..x]]
+    arbitrary = do
+        x <- choose (0,5)
+        y <- choose (0,5)
+        return [(x,y)|i<-[0..x]]

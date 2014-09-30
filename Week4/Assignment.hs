@@ -114,7 +114,8 @@ verif :: Rel Int -> [Bool] -- Rel Int
 verif [] = []
 verif (x:xs) = [elem x (trClos(x:xs))] ++ (verif xs)
 
-
-
+lenSet :: (Ord a) => Set a-> Int
+lenSet (Set []) = 0
+lenSet (Set (x:xs))= 1 + lenSet (Set xs)
 
 
