@@ -89,6 +89,18 @@ verif (x:xs) = [elem x (trClos(x:xs))] ++ (verif xs)
 
 -- The random verification method used in the HSpec
 
+=============================================================================================================================
+please set extentions -XFlexibleInstances, -XFlexibleContexts and -XOverlappingInstances on 
+in order to use instance Arbitrary (Rel Int)
+=============================================================================================================================
+
+instance Arbitrary (Rel Int) where
+	arbitrary = do
+		x <- choose (0,5)
+		y <- choose (0,5)
+		return [(x,y)|i<-[0..x]] 
+
+
 quickVerif :: Rel Int -> Property -- consumable by quickCheck
 quickVerif x =
 	property $ -- not(elem False 
@@ -98,4 +110,6 @@ lenSet :: (Ord a) => Set a-> Int
 lenSet (Set []) = 0
 lenSet (Set (x:xs))= 1 + lenSet (Set xs)
 
+-- quickCheck cuickVerif
 
+-- +++ OK, passed 100 tests
