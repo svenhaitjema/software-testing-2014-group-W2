@@ -5,47 +5,11 @@ module Assignment
 
 where
 import Test.QuickCheck
+import Test.Hspec
 import System.Random
 import Data.List
 import SetOrd
 
---Opdracht 1.
---Sinan:
---    -
---    -
---    -
---Amir:
---    -
---    -
---    -
---Sven:
---    -
---    -
---    -
---Wai Yi:
---    -
---    -
---    -
-
---Opdracht 2.
---Sinan:
---    -
---    -
---    -
---Amir:
---    -
---    -
---    -
---Sven:
---    -
---    -
---    -
---Wai Yi:
---    -
---    -
---    -
-
---Opdracht 3.
 getRandomInt :: Int -> IO Int
 getRandomInt n = getStdRandom (randomR (0,n))
 
@@ -95,6 +59,39 @@ setDifference (Set []) (Set s) = Set []
 setDifference (Set (x:xs)) (Set s) | inSet x (Set (sort s)) = setDifference (Set xs) (Set s)
     | otherwise = setUnion (Set [x]) (setDifference (Set xs) (Set s))
 
+ioSetIntersection :: Set Int -> Set Int -> IO (Set Int)
+ioSetIntersection n p = do
+        return (setIntersection (n) (p))       
+       
+lenSet :: (Ord a) => Set a-> Int
+lenSet (Set []) = 0
+lenSet (Set (x:xs))= 1 + lenSet (Set xs)       
+       
+doTest :: Int -> IO (Bool)
+doTest n = do
+        fs <- (randomSet2 0 n)
+        putStr "First generated set: "
+        print(fs)
+        ss <- (randomSet2 0 n)
+        putStr "Second generated set: "
+        print(ss)
+        iss <- (ioSetIntersection fs ss)
+        putStr "Intersection"
+        print(iss)
+        return ((subSet iss fs) && (subSet iss fs) && ((lenSet iss) <= (lenSet fs)) && ((lenSet iss) <= (lenSet ss)) )
+       
+doLotsOfTests :: Int -> Int -> IO ()
+doLotsOfTests n p = do
+    if (p==0) then print("All tests passed")
+        else do
+        t <- doTest n  
+        if (t) then do
+                print("Test Passed")
+                (doLotsOfTests n (p-1))
+        else print("Test failed")
+
+
+
 --OPDRACHT 5.
 type Rel a = [(a,a)]
 infixr 5 @@
@@ -109,14 +106,19 @@ trClos x | x == nub(x ++ (x @@ x)) = sort(x)
 -- See Tests.hs and run with:
 -- $ runhaskell Tests.hs
 
-
 --Opdracht 7
+-- The random verification method used in the HSpec
+instance Arbitrary (Rel Int) where
+	arbitrary = do
+		x <- choose (0,5)
+		y <- choose (0,5)
+		return [(x,y)|i<-[0..x]] 
 
 
-lenSet :: (Ord a) => Set a-> Int
-lenSet (Set []) = 0
-lenSet (Set (x:xs))= 1 + lenSet (Set xs)
-
+quickVerif :: Rel Int -> Property -- consumable by quickCheck
+quickVerif x =
+	property $ -- not(elem False 
+		all (==True) (verif (nub(x)))-- ) -- == False
 
 -- The random verification method used in the HSpec
 verif :: Rel Int -> [Bool]
@@ -138,8 +140,5 @@ prop_nothing_smaller_than_empty xs = trClos [] <= trClos xs
 prop_print xs = 
         let y = xs
         in (trClos y == trClos y)
-
-
-
 
 
