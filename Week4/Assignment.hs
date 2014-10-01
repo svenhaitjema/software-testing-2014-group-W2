@@ -1,3 +1,6 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE OverlappingInstances #-}
+
 module Assignment
 
 where
@@ -109,13 +112,34 @@ trClos x | x == nub(x ++ (x @@ x)) = sort(x)
 
 --Opdracht 7
 
--- The random verification method used in the HSpec
-verif :: Rel Int -> [Bool] -- Rel Int
-verif [] = []
-verif (x:xs) = [elem x (trClos(x:xs))] ++ (verif xs)
 
 lenSet :: (Ord a) => Set a-> Int
 lenSet (Set []) = 0
 lenSet (Set (x:xs))= 1 + lenSet (Set xs)
+
+
+-- The random verification method used in the HSpec
+verif :: Rel Int -> [Bool]
+verif [] = []
+verif (x:xs) = [elem x (trClos(x:xs))] ++ (verif xs)
+
+
+-- #Amir: deze deze kun je met: quickCheck vvv runnen, die test de functie verif... 
+-- (hij genereert random waarden en geeft aan als t falsifiable is)
+vvv :: Rel Int -> Property
+vvv x = property $
+		all (==True) (verif (nub(x)))
+-- Using quickcheck requires to define the smallest testable property of the 
+-- algorithm.
+
+-- predicates to use in quickCheck:
+prop_sameres xs = trClos xs == trClos xs
+prop_nothing_smaller_than_empty xs = trClos [] <= trClos xs
+prop_print xs = 
+        let y = xs
+        in (trClos y == trClos y)
+
+
+
 
 
