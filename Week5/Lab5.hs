@@ -16,12 +16,9 @@ import Week5
 --               [ subgridInjective s (r,c) |
 --                    r <- [1,4,7], c <- [1,4,7]]
 
-
-lenSudoku :: Grid x-> Int
+lenSudoku :: Grid -> Int
 lenSudoku [] = 0
 lenSudoku (x:xs)= length(x) + lenSudoku( xs )
-
-
 
 main2 :: IO ()
 main2 = hspec $ do
