@@ -17,13 +17,19 @@ import Week5
 --                    r <- [1,4,7], c <- [1,4,7]]
 
 
+lenSudoku :: Grid x-> Int
+lenSudoku [] = 0
+lenSudoku (x:xs)= length(x) + lenSudoku( xs )
+
+
+
 main2 :: IO ()
 main2 = hspec $ do
   describe "Specification of the Sudoku Game\n" $ do
     it "Checks if there are 9 lists in a grid" $ do
         length(example1) == 9
     it "Checks if there are 81 elements in the 9 lists" $ do
-        length(example1) == 81 -- is nog niet correct
+        lenSudoku(example1) == 81 -- is nog niet correct
     it "Checks if the row is consistent" $ do
         and [rowInjective (grid2sud example1) c |  c <- positions ] `shouldBe` True
     it "Checks if the column is consistent" $ do
