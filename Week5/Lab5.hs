@@ -196,7 +196,7 @@ prune (r,c,v) ((x,y,zs):rest)
   | c == y = (x,y,zs\\[v]) : prune (r,c,v) rest
   | sameblock (r,c) (x,y) = 
         (x,y,zs\\[v]) : prune (r,c,v) rest
-  | isSameprBlock (r,c) (x,y) =
+  | isSamePrBlock (r,c) (x,y) =
         (x,y,zs\\[v]) : prune (r,c,v) rest    
   | otherwise = (x,y,zs) : prune (r,c,v) rest
 
