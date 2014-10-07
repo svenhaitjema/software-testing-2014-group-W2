@@ -140,7 +140,7 @@ generate5Free = do
               else generate6Free
           else generate6Free
 
--- the example5 grid is an example of a sudoku problem with 5 (actually 6) blocks empty. It takes a very long time to either 
+-- the example5 grid is an example of a sudoku problem with 5 (actually 6) blocks empty. It takes very long time to either 
 -- create or solve such.
 
 
