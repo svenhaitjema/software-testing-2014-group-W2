@@ -112,6 +112,8 @@ generate4Free = do
             else generate4Free
         else generate4Free
       
+-- the example4 grid is an example of a sudoku problem with 4 blocks empty
+
 
 generate5Free = do
   name <- genRandomSudoku
@@ -138,7 +140,8 @@ generate5Free = do
               else generate6Free
           else generate6Free
 
-
+-- the example5 grid is an example of a sudoku problem with 5 (actually 6) blocks empty. It takes a very long time to either 
+-- create or solve such.
 
 
 -- Question 4
