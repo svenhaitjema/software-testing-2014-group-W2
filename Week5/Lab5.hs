@@ -155,6 +155,21 @@ generate5Free = do
 
 
 -- Question 4
+
+{-| Override in week5.hs
+consistent :: Sudoku -> Bool
+consistent s = and $
+               [ rowInjective s r |  r <- positions ]
+                ++
+               [ colInjective s c |  c <- positions ]
+                ++
+               [ subgridInjective s (r,c) | 
+                    r <- [1,4,7], c <- [1,4,7]]
+                ++
+               [ nrcSubBlockInjective s (r,c) | 
+                    r <- [2,6], c <- [2,6]]
+-}
+
 nrcBlockPositions :: [[Int]]
 nrcBlockPositions = [[2..4],[6..8]]
 
