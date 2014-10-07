@@ -67,6 +67,13 @@ eraseOne node (x:xs) n | n == 0 = [eraseN node x]
    | otherwise = [eraseN node ((x:xs)!!n)] ++ (eraseOne node (x:xs) (n-1)) --  [eraseN n (r,c)]
 
 
+generatePositiveMinimalTest :: Bool
+generatePositiveMinimalTest = do 
+  sud <- genRandomSudoku
+  node <- genProblem sud
+  return (isMinimal node)
+
+
 -- Question 3
 genProblem3 :: Node -> IO Node
 genProblem3 n = do ys <- randomize xs
