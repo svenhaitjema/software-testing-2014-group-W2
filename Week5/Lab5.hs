@@ -50,6 +50,21 @@ mainq2 = hspec $ do
             s  <- genProblem r
             showNode s
 
+
+isMinimal :: (Sudoku, [Constraints]) -> Bool
+isMinimal node = let
+   f = (filledPositions (fst node)) in
+   and(map (not.uniqueSol) (callErase node f))
+
+callErase :: Node -> [(Row, Column)] -> [Node]
+callErase node x = eraseOne node x (length(x)-1)
+
+eraseOne :: Node -> [(Row, Column)] -> Int -> [Node]
+eraseOne node [] n = error "please give a non-empty sudoku problem"
+eraseOne node (x:xs) n | n == 0 = [eraseN node x]
+   | otherwise = [eraseN node ((x:xs)!!n)] ++ (eraseOne node (x:xs) (n-1)) --  [eraseN n (r,c)]
+
+
 -- Question 3
 genProblem3 :: Node -> IO Node
 genProblem3 n = do ys <- randomize xs
@@ -57,6 +72,74 @@ genProblem3 n = do ys <- randomize xs
                    print(ys)
                    return (minimalize n xs)
    where xs = filledPositions (fst n)
+
+
+
+generate3Free :: IO()
+generate3Free = do
+  name <- genRandomSudoku
+  let 
+    a = (([(i,j)|i<-[1..3],j<-[1..3]])) 
+    b = (([(i,j)|i<-[4..6],j<-[4..6]])) 
+    c = (([(i,j)|i<-[7..9],j<-[7..9]])) 
+    m1 = ((minimalize name) (a++b++c)) in
+      if (and(map(\x -> elem x (openPositions(fst m1))) a) 
+        && and(map(\x -> elem x (openPositions(fst m1))) b) 
+        && and(map(\x -> elem x (openPositions(fst m1))) c))  
+      then showNode m1
+      else generate3Free
+      
+      
+generate4Free :: IO()
+generate4Free = do
+  name <- genRandomSudoku
+  let 
+    a = (([(i,j)|i<-[4..6],j<-[1..3]]))
+    b = (([(i,j)|i<-[1..3],j<-[4..6]]))
+    c = (([(i,j)|i<-[7..9],j<-[4..6]]))
+    d = (([(i,j)|i<-[4..6],j<-[7..9]]))
+    m1 = ((minimalize name) (a++b++c++d)) in
+      if and(map(\x -> elem x (openPositions(fst m1))) a)
+        then 
+          if and(map(\x -> elem x (openPositions(fst m1))) b) 
+            then
+              if and(map(\x -> elem x (openPositions(fst m1))) c) 
+                then
+                  if and(map(\x -> elem x (openPositions(fst m1))) d)
+                    then showNode m1
+                    else generate4Free
+               else generate4Free
+            else generate4Free
+        else generate4Free
+      
+
+generate5Free = do
+  name <- genRandomSudoku
+  let 
+    a = (([(i,j)|i<-[4..6],j<-[1..3]]))
+    b = (([(i,j)|i<-[1..3],j<-[4..6]]))
+    c = (([(i,j)|i<-[7..9],j<-[4..6]]))
+    d = (([(i,j)|i<-[4..6],j<-[7..9]]))
+    e = (([(i,j)|i<-[1..3],j<-[7..9]]))
+    m1 = ((minimalize name) (a++b++c++d++e)) in
+      if and(map(\x -> elem x (openPositions(fst m1))) a)
+        then 
+          if and(map(\x -> elem x (openPositions(fst m1))) b) 
+            then
+              if and(map(\x -> elem x (openPositions(fst m1))) c) 
+                then
+                  if and(map(\x -> elem x (openPositions(fst m1))) d)
+                    then
+                      if and(map(\x -> elem x (openPositions(fst m1))) e)
+                        then showNode m1
+                        else generate6Free
+                    else generate6Free
+                 else generate6Free
+              else generate6Free
+          else generate6Free
+
+
+
 
 -- Question 4
 
@@ -163,6 +246,11 @@ q4 = do [r] <- rsolveNs [emptyN]
 
 
 
+
+
+
+
+-- question 6.
 
 
 
