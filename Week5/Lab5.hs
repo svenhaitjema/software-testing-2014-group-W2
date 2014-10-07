@@ -153,6 +153,26 @@ generate5Free = do
 -- create or solve such.
 
 
+
+-- Question 4
+nrcBlockPositions :: [[Int]]
+nrcBlockPositions = [[2..4],[6..8]]
+
+nrcBlock :: Int -> [Int]
+nrcBlock x = concat $ filter (elem x) nrcBlockPositions     
+
+nrcSubBlock:: Sudoku -> (Row,Column) -> [Value]
+nrcSubBlock s (r,c) = 
+  [ s (r',c') | r' <- nrcBlock r, c' <- nrcBlock c ]
+
+freeInNrcSubBlock :: Sudoku -> (Row,Column) -> [Value]
+freeInNrcSubBlock s (r,c) = freeInSeq (nrcSubBlock s (r,c))
+
+nrcSubBlockInjective :: Sudoku -> (Row,Column) -> Bool
+nrcSubBlockInjective s (r,c) = injective vs where 
+   vs = filter (/= 0) (nrcSubBlock s (r,c))
+
+
 -- Question 4
 
 -- definition of blocks:
