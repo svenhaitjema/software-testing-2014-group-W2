@@ -157,6 +157,26 @@ generate5Free = do
 -- Question 4
 
 {-| Override in week5.hs
+prBlockPositions :: [[Int]]
+prBlockPositions = [[2..4],[6..8]]
+
+prBlock :: Int -> [Int]
+prBlock x = concat $ filter (elem x) prBlockPositions     
+
+prSubBlock:: Sudoku -> (Row,Column) -> [Value]
+prSubBlock s (r,c) = 
+  [ s (r',c') | r' <- prBlock r, c' <- prBlock c ]
+
+freeInPrSubBlock :: Sudoku -> (Row,Column) -> [Value]
+freeInPrSubBlock s (r,c) = freeInSeq (prSubBlock s (r,c))
+
+prSubBlockInjective :: Sudoku -> (Row,Column) -> Bool
+prSubBlockInjective s (r,c) = injective vs where 
+   vs = filter (/= 0) (prSubBlock s (r,c))
+   
+isSamePrBlock :: (Row,Column) -> (Row,Column) -> Bool
+isSamePrBlock (r,c) (x,y) = prBlock r == prBlock x && prBlock c == prBlock y 
+
 consistent :: Sudoku -> Bool
 consistent s = and $
                [ rowInjective s r |  r <- positions ]
@@ -166,27 +186,21 @@ consistent s = and $
                [ subgridInjective s (r,c) | 
                     r <- [1,4,7], c <- [1,4,7]]
                 ++
-               [ nrcSubBlockInjective s (r,c) | 
+               [ prSubBlockInjective s (r,c) | 
                     r <- [2,6], c <- [2,6]]
+                    
+prune :: (Row,Column,Value) -> [Constraint] -> [Constraint]
+prune _ [] = []
+prune (r,c,v) ((x,y,zs):rest)
+  | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest
+  | c == y = (x,y,zs\\[v]) : prune (r,c,v) rest
+  | sameblock (r,c) (x,y) = 
+        (x,y,zs\\[v]) : prune (r,c,v) rest
+  | isSameprBlock (r,c) (x,y) =
+        (x,y,zs\\[v]) : prune (r,c,v) rest    
+  | otherwise = (x,y,zs) : prune (r,c,v) rest
+
 -}
-
-nrcBlockPositions :: [[Int]]
-nrcBlockPositions = [[2..4],[6..8]]
-
-nrcBlock :: Int -> [Int]
-nrcBlock x = concat $ filter (elem x) nrcBlockPositions     
-
-nrcSubBlock:: Sudoku -> (Row,Column) -> [Value]
-nrcSubBlock s (r,c) = 
-  [ s (r',c') | r' <- nrcBlock r, c' <- nrcBlock c ]
-
-freeInNrcSubBlock :: Sudoku -> (Row,Column) -> [Value]
-freeInNrcSubBlock s (r,c) = freeInSeq (nrcSubBlock s (r,c))
-
-nrcSubBlockInjective :: Sudoku -> (Row,Column) -> Bool
-nrcSubBlockInjective s (r,c) = injective vs where 
-   vs = filter (/= 0) (nrcSubBlock s (r,c))
-
 
 -- Question 4
 
@@ -303,7 +317,7 @@ q4 = do [r] <- rsolveNs [emptyN]
 -- difficul of a specific sudoku problem. Besides luck, one of the main influners on the hardness of a problem is 
 -- the height of branching factors that underly a specific problem. 
 -- having branching factor 1 means that the problem can be solved straight forward, without having to evaluate the evolution 
--- of the solution based on assumptions (no backtracking).
+-- of the solution based on assumptions.
 -- A sudoku problem having branching factor 2 or higher requires making such assumption and mental manipulation of the 
 -- number which requires remembering more numbers at each step and is considered hard.
 -- The computation complexity increases as well as the branching factor increases.
