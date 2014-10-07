@@ -303,7 +303,7 @@ q4 = do [r] <- rsolveNs [emptyN]
 -- difficul of a specific sudoku problem. Besides luck, one of the main influners on the hardness of a problem is 
 -- the height of branching factors that underly a specific problem. 
 -- having branching factor 1 means that the problem can be solved straight forward, without having to evaluate the evolution 
--- of the solution based on assumptions.
+-- of the solution based on assumptions (no backtracking).
 -- A sudoku problem having branching factor 2 or higher requires making such assumption and mental manipulation of the 
 -- number which requires remembering more numbers at each step and is considered hard.
 -- The computation complexity increases as well as the branching factor increases.
