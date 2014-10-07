@@ -50,6 +50,8 @@ mainq2 = hspec $ do
             s  <- genProblem r
             showNode s
 
+-- such a test could be to take a problem and put for test of minimalizm all the parent nodes with one filled position less,
+-- and then check their children for uniqueness.
 
 isMinimal :: (Sudoku, [Constraints]) -> Bool
 isMinimal node = let
