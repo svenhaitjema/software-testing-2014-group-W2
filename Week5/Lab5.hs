@@ -252,7 +252,24 @@ q4 = do [r] <- rsolveNs [emptyN]
 
 -- question 6.
 
+-- there are various known techniques that humans use to solve sudokus that can be used to classify the 
+-- difficul of a specific sudoku problem. Besides luck, one of the main influners on the hardness of a problem is 
+-- the height of branching factors that underly a specific problem. 
+-- having branching factor 1 means that the problem can be solved straight forward, without having to evaluate the evolution 
+-- of the solution based on assumptions.
+-- A sudoku problem having branching factor 2 or higher requires making such assumption and mental manipulation of the 
+-- number which requires remembering more numbers at each step and is considered hard.
+-- The computation complexity increases as well as the branching factor increases.
+-- rough classification of the hardness of a sudoku problem is thus based on the hardness of the techniques used to "traverse" 
+-- problem trees of higher branching factors, which we here roughly divide categorize in branching factor higher = 1, 2 and 3+
 
+checkDifficulty :: Node -> [Char]
+checkDifficulty n | filter (>1) (branchingFactors(grow succNode n)) == [] = "easy"
+  | filter (>2) (branchingFactors(grow succNode n)) == [] = "medium"
+  | otherwise = "hard"
+
+branchingFactors :: Tree Node -> [Int]
+branchingFactors (T t ts) = [length(succNode(t))]  ++ concat(map branchingFactors ts) 
 
 
 
