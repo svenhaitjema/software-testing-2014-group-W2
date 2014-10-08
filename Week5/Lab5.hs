@@ -50,6 +50,30 @@ mainq2 = hspec $ do
             s  <- genProblem r
             showNode s
 
+-- such a test could be to take a problem and put for test of minimalizm all the parent nodes with one filled position less,
+-- and then check their children for uniqueness.
+
+isMinimal :: (Sudoku, [Constraints]) -> Bool
+isMinimal node = let
+   f = (filledPositions (fst node)) in
+   and(map (not.uniqueSol) (callErase node f))
+
+callErase :: Node -> [(Row, Column)] -> [Node]
+callErase node x = eraseOne node x (length(x)-1)
+
+eraseOne :: Node -> [(Row, Column)] -> Int -> [Node]
+eraseOne node [] n = error "please give a non-empty sudoku problem"
+eraseOne node (x:xs) n | n == 0 = [eraseN node x]
+   | otherwise = [eraseN node ((x:xs)!!n)] ++ (eraseOne node (x:xs) (n-1)) --  [eraseN n (r,c)]
+
+
+generatePositiveMinimalTest :: IO Bool
+generatePositiveMinimalTest = do 
+  sud <- genRandomSudoku
+  node <- genProblem sud
+  return (isMinimal node)
+
+
 -- Question 3
 genProblem3 :: Node -> IO Node
 genProblem3 n = do ys <- randomize xs
@@ -57,6 +81,161 @@ genProblem3 n = do ys <- randomize xs
                    print(ys)
                    return (minimalize n xs)
    where xs = filledPositions (fst n)
+
+
+
+generate3Free :: IO()
+generate3Free = do
+  name <- genRandomSudoku
+  let 
+    a = (([(i,j)|i<-[1..3],j<-[1..3]])) 
+    b = (([(i,j)|i<-[4..6],j<-[4..6]])) 
+    c = (([(i,j)|i<-[7..9],j<-[7..9]])) 
+    m1 = ((minimalize name) (a++b++c)) in
+      if (and(map(\x -> elem x (openPositions(fst m1))) a) 
+        && and(map(\x -> elem x (openPositions(fst m1))) b) 
+        && and(map(\x -> elem x (openPositions(fst m1))) c))  
+      then showNode m1
+      else generate3Free
+      
+      
+generate4Free :: IO()
+generate4Free = do
+  name <- genRandomSudoku
+  let 
+    a = (([(i,j)|i<-[4..6],j<-[1..3]]))
+    b = (([(i,j)|i<-[1..3],j<-[4..6]]))
+    c = (([(i,j)|i<-[7..9],j<-[4..6]]))
+    d = (([(i,j)|i<-[4..6],j<-[7..9]]))
+    m1 = ((minimalize name) (a++b++c++d)) in
+      if and(map(\x -> elem x (openPositions(fst m1))) a)
+        then 
+          if and(map(\x -> elem x (openPositions(fst m1))) b) 
+            then
+              if and(map(\x -> elem x (openPositions(fst m1))) c) 
+                then
+                  if and(map(\x -> elem x (openPositions(fst m1))) d)
+                    then showNode m1
+                    else generate4Free
+               else generate4Free
+            else generate4Free
+        else generate4Free
+      
+-- the example4 grid is an example of a sudoku problem with 4 blocks empty
+
+
+generate5Free = do
+  name <- genRandomSudoku
+  let 
+    a = (([(i,j)|i<-[4..6],j<-[1..3]]))
+    b = (([(i,j)|i<-[1..3],j<-[4..6]]))
+    c = (([(i,j)|i<-[7..9],j<-[4..6]]))
+    d = (([(i,j)|i<-[4..6],j<-[7..9]]))
+    e = (([(i,j)|i<-[1..3],j<-[7..9]]))
+    m1 = ((minimalize name) (a++b++c++d++e)) in
+      if and(map(\x -> elem x (openPositions(fst m1))) a)
+        then 
+          if and(map(\x -> elem x (openPositions(fst m1))) b) 
+            then
+              if and(map(\x -> elem x (openPositions(fst m1))) c) 
+                then
+                  if and(map(\x -> elem x (openPositions(fst m1))) d)
+                    then
+                      if and(map(\x -> elem x (openPositions(fst m1))) e)
+                        then showNode m1
+                        else generate6Free
+                    else generate6Free
+                 else generate6Free
+              else generate6Free
+          else generate6Free
+
+-- the example5 grid is an example of a sudoku problem with 5 (actually 6) blocks empty. It takes very long time to either 
+-- create or solve such.
+
+
+
+-- Question 4
+
+{-| Override in week5.hs
+prBlockPositions :: [[Int]]
+prBlockPositions = [[2..4],[6..8]]
+
+prBlock :: Int -> [Int]
+prBlock x = concat $ filter (elem x) prBlockPositions     
+
+prSubBlock:: Sudoku -> (Row,Column) -> [Value]
+prSubBlock s (r,c) = 
+  [ s (r',c') | r' <- prBlock r, c' <- prBlock c ]
+
+freeInPrSubBlock :: Sudoku -> (Row,Column) -> [Value]
+freeInPrSubBlock s (r,c) = freeInSeq (prSubBlock s (r,c))
+
+prSubBlockInjective :: Sudoku -> (Row,Column) -> Bool
+prSubBlockInjective s (r,c) = injective vs where 
+   vs = filter (/= 0) (prSubBlock s (r,c))
+   
+isSamePrBlock :: (Row,Column) -> (Row,Column) -> Bool
+isSamePrBlock (r,c) (x,y) = prBlock r == prBlock x && prBlock c == prBlock y 
+
+consistent :: Sudoku -> Bool
+consistent s = and $
+               [ rowInjective s r |  r <- positions ]
+                ++
+               [ colInjective s c |  c <- positions ]
+                ++
+               [ subgridInjective s (r,c) | 
+                    r <- [1,4,7], c <- [1,4,7]]
+                ++
+               [ prSubBlockInjective s (r,c) | 
+                    r <- [2,6], c <- [2,6]]
+                    
+prune :: (Row,Column,Value) -> [Constraint] -> [Constraint]
+prune _ [] = []
+prune (r,c,v) ((x,y,zs):rest)
+  | r == x = (x,y,zs\\[v]) : prune (r,c,v) rest
+  | c == y = (x,y,zs\\[v]) : prune (r,c,v) rest
+  | sameblock (r,c) (x,y) = 
+        (x,y,zs\\[v]) : prune (r,c,v) rest
+  | isSamePrBlock (r,c) (x,y) =
+        (x,y,zs\\[v]) : prune (r,c,v) rest    
+  | otherwise = (x,y,zs) : prune (r,c,v) rest
+
+-}
+
+-- Question 5
+genPrSudoku ::  IO()
+genPrSudoku = do
+	[sudoku] <- rsolveNs [emptyN]
+	showNode sudoku
+	s  <- genProblem sudoku
+	showNode s
+
+{-| Result
++-------+-------+-------+
+| 2 1 5 | 3 8 9 | 4 6 7 |
+| 4 3 7 | 5 2 6 | 1 9 8 |
+| 6 8 9 | 1 4 7 | 5 3 2 |
++-------+-------+-------+
+| 9 7 2 | 4 3 1 | 6 8 5 |
+| 8 5 3 | 6 7 2 | 9 4 1 |
+| 1 6 4 | 9 5 8 | 7 2 3 |
++-------+-------+-------+
++-------+-------+-------+
+|   2 1 |       | 3   6 |
+| 3     |       | 2     |
+|     6 |       |   7 9 |
++-------+-------+-------+
+|       |     9 |       |
+| 4     |       |     8 |
+| 6   9 | 1     |       |
++-------+-------+-------+
+|       |   3   | 6     |
+|     3 | 6     |       |
+|       |       |       |
++-------+-------+-------+
+-}
+
+
 
 -- Question 4
 
@@ -161,3 +340,31 @@ Sudoku problems solvable using CP are ranked as "easy" or "mild" are simple Sudo
 Based on these criteria we could write an algorithm to determine the level of our Sudoku
 
 -}
+
+
+
+
+
+
+
+
+-- question 6.
+
+-- there are various known techniques that humans use to solve sudokus that can be used to classify the 
+-- difficul of a specific sudoku problem. Besides luck, one of the main influners on the hardness of a problem is 
+-- the height of branching factors that underly a specific problem. 
+-- having branching factor 1 means that the problem can be solved straight forward, without having to evaluate the evolution 
+-- of the solution based on assumptions.
+-- A sudoku problem having branching factor 2 or higher requires making such assumption and mental manipulation of the 
+-- number which requires remembering more numbers at each step and is considered hard.
+-- The computation complexity increases as well as the branching factor increases.
+-- rough classification of the hardness of a sudoku problem is thus based on the hardness of the techniques used to "traverse" 
+-- problem trees of higher branching factors, which we here roughly divide categorize in branching factor higher = 1, 2 and 3+
+
+checkDifficulty :: Node -> [Char]
+checkDifficulty n | filter (>1) (branchingFactors(grow succNode n)) == [] = "easy"
+  | filter (>2) (branchingFactors(grow succNode n)) == [] = "medium"
+  | otherwise = "hard"
+
+branchingFactors :: Tree Node -> [Int]
+branchingFactors (T t ts) = [length(succNode(t))]  ++ concat(map branchingFactors ts) 
