@@ -359,7 +359,7 @@ Based on these criteria we could write an algorithm to determine the level of ou
 -- number which requires remembering more numbers at each step and is considered hard.
 -- The computation complexity increases as well as the branching factor increases.
 -- rough classification of the hardness of a sudoku problem is thus based on the hardness of the techniques used to "traverse" 
--- problem trees of higher branching factors, which we here roughly divide categorize in branching factor higher = 1, 2 and 3+
+-- problem trees of higher branching factors, which we here roughly categorize in branching factor up to 1, 2 and 3+
 
 checkDifficulty :: Node -> [Char]
 checkDifficulty n | filter (>1) (branchingFactors(grow succNode n)) == [] = "easy"
