@@ -53,7 +53,7 @@ mainq2 = hspec $ do
 -- such a test could be to take a problem and put for test of minimalizm all the parent nodes with one filled position less,
 -- and then check their children for uniqueness.
 
-isMinimal :: (Sudoku, [Constraints]) -> Bool
+isMinimal :: (Sudoku, [Constraint]) -> Bool
 isMinimal node = let
    f = (filledPositions (fst node)) in
    and(map (not.uniqueSol) (callErase node f))
@@ -143,11 +143,11 @@ generate5Free = do
                     then
                       if and(map(\x -> elem x (openPositions(fst m1))) e)
                         then showNode m1
-                        else generate6Free
-                    else generate6Free
-                 else generate6Free
-              else generate6Free
-          else generate6Free
+                        else generate5Free
+                    else generate5Free
+                 else generate5Free
+              else generate5Free
+          else generate5Free
 
 -- the example5 grid is an example of a sudoku problem with 5 (actually 6) blocks empty. It takes very long time to either 
 -- create or solve such.
