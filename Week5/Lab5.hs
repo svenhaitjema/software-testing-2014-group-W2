@@ -111,64 +111,53 @@ getBlock blockno = do
 getRandomRInt :: Int -> Int -> IO Int
 getRandomRInt l h = randomRIO (l,h)
 
-getRandomInts :: Int -> IO Int
-getRandomInts n = getRandomRInt 1 9
+-- getRandomInts :: Int -> IO Int
+-- getRandomInts n = getRandomRInt 1 9
 
--- 
+getRandomInts :: Int -> IO [Int]
+getRandomInts 0 = return([])
+getRandomInts n = do x <- getRandomRInt 1 9
+                     xs <- getRandomInts (n-1)
+                     return([x]++xs)
+
 -- getRandomInts' :: Int -> IO [Int]
 -- getRandomInts' 0 = return []
 -- getRandomInts' n = getRandomInts' 0 ++ getRandomRInt 1 9 ++ getRandomInts' (n-1)
-
-
--- getRandomInts' n = do x <- getRandomRInt 1 9
---                       if elem x ys
---                           then return [x] ++ ys 
---                           else do 
---                               return getRandomInts' n
---                    where ys = getRandomInts' (n-1)
-
-
--- getRandomInts' n | elem x ys = do $
---                                 x <- getRandomRInt 1 9
---                                 xs <- getRandomInts' (n)
---                                 return ( [x] ++ xs )
---                  | otherwise = do $
---                                 x <- getRandomRInt 1 9
---                                 xs <- getRandomInts' (n-1)
---                                 return ( [x] ++ xs )
---                 where ys = getRandomInts' (n-1)
-
--- getRandomInts' 0 (x:xs) = return ([x] ++ xs)
--- getRandomInts' n (x:xs) | elem y (x:xs) = ( getRandomInts' n (x:xs) )
---                     | otherwise = return (x :  ( getRandomInts' (n-1) (x:xs) ) )
---     where y = getRandomRInt 1 9
---                 
-
 
 getBlocks :: Int -> [(Row, Column)]
 getBlocks 0 = []
 getBlocks n = getBlock 1 ++ getBlock 5 ++ getBlock 9
 
-
 -- we can use the map getBlock [list...] to obtain a list of positions to clear
-
-
 q4 :: IO ()
 q4 = do [r] <- rsolveNs [emptyN]
         showNode r
         s  <- genProblem4 r
         showNode s
 
+-- Question 6
+{-
+Sudoku puzzles fall in the catagory of Constraint satisfaction problems (CSP).
+Difficulty is correlates with human performance (measured by time).
+"The first level of complexity is defined by the complexity of the 
+individual steps (logic operation) involved in solving the problem"
+"The second criteria determining the complexity is the structure of dependency
+among individual steps, whether steps are independent, e.g. parallel branching 
+in the search tree or are dependent (sequential)"
 
+(chapter 2.2)
+The backtracking search is a basic approach solving CPSs. It tries to find a
+solution by assigning values to variables one by one. This is time consuming, it 
+continues till a violation is made and backtracks to the last "valid" contraint.
+This systemetich approach is time consuming and hard for humans.
 
+The Constraint Propagation(CP) technique determines values for a variable by reasoning
+about a candidate set meeting the constraints. This is much simpler than the backtracking
+approach and can be solved with 2 steps:
+- Naked single technique
+- Hidden single technique
+Sudoku problems solvable using CP are ranked as "easy" or "mild" are simple Sudokus.
 
+Based on these criteria we could write an algorithm to determine the level of our Sudoku
 
-
-
-
-
-
-
-
-
-
+-}
