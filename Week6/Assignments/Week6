@@ -1,0 +1,313 @@
+module Lab6
+
+where
+
+import Data.List
+import System.Random
+import Week6
+
+
+-- Question 1
+
+-- the function is called here exM2 to avoid clash with the same function with the name exM used in 
+-- the file Week6.hs
+
+exM2 :: Integral a => Integer -> a -> Integer -> Integer 
+exM2 x y n | y == 0 = 1
+		 | (odd y) = let t1 = rem ((exM2 x (y `div` 2) n)^2) n
+		in multM x t1 n
+		| otherwise = let t = exM2 x (y `div` 2) n in 
+		multM t t n
+
+-- Question 2
+
+-- for small numbers, no significant difference is noticed:
+-- exM2 3 12 13
+-- 1
+-- expM 3 12 13
+-- 1
+
+-- exM2 3 40000000 30000000000
+-- 1
+-- expM 3 40000000 30000000000
+-- 1
+
+-- exM2 3 40000000 30000000000
+-- 18800000001
+-- expM 3 40000000 30000000000
+-- 18800000001
+
+-- exM2 3 (10^5) (30^8)
+-- 603422000001
+-- expM 3 (10^5) (30^8)
+-- 603422000001
+
+-- exM2 3 1000000000 (30^8)
+-- 590300000001
+-- expM 3 1000000000 (30^8)
+-- <interactive>: getMBlocks: VirtualAlloc Mem_COMMIT failed: the paging file is too small 
+-- for this operation to complete
+
+
+
+-- Question 3
+composite :: [Integer]
+composite = filter (not.isPrime) [2..]
+
+
+-- Question 4
+
+
+-- A problem noticed in fermat primality test is that it takes random base numbers between 1 and n.
+-- Including the number 1 in the possible checked bases can be seen as increasing the noise of the test
+-- as for base 1 exM will result with 1 for every given n.
+
+testComposite :: Int -> Integer -> IO [Integer]
+testComposite k n = falsePosit primeF k (takeWhile (<=n) composite) []
+
+falsePosit fn k [] fps = do
+	print ("false positives:")
+	return (reverse fps)
+falsePosit fn k (x:xs) fps = do
+	fermat <- fn k x
+	if fermat
+	then falsePosit fn k xs (x:fps)
+	else falsePosit fn k xs (fps)
+
+-- as can be seen as follows, the smallest number that can fool the check 
+-- is also the smallest composite number: 4
+-- as k increases the frequency of gettingn false positive declines.
+
+-- testComposite 1 100
+-- "false positives:"
+-- [15,58, 65,78]
+-- testComposite 1 100
+-- "false positives:"
+-- [6, 28, 62, 65,69]
+-- testComposite 2 100
+-- "false positives:"
+-- []
+-- testComposite 2 100
+-- "false positives:"
+-- [4, 15]
+-- testCompostestCompositetestCompositeite 2 100
+-- "false positives:"
+-- [28, 65]
+-- testComposite 3 100
+-- "false positives:"
+-- [8, 38]
+-- testComposite 3 100
+-- "false positives:"
+-- []
+-- testComposite 3 100
+-- "false positives:"
+-- []
+-- testComposite 8 800
+-- "false positives:"
+-- []
+-- testComposite 8 800
+-- "false positives:"
+-- []
+
+
+
+-- Question 5
+
+carmichael :: [Integer]
+carmichael = [ (6*k+1)*(12*k+1)*(18*k+1) |
+	k <- [2..],
+	isPrime (6*k+1),
+	isPrime (12*k+1),
+	isPrime (18*k+1) ]
+
+testCarmichael :: Int -> Int -> IO [Integer]
+testCarmichael k n = falsePosit primeF k (take n carmichael) []
+
+-- As expected this test gives almost always plenty of false positives (as the carmichael numbers 
+-- are known for being those numbers that fool the fermat test). Even though, when increasing the number of 
+-- iterations of the test, and on the other hand decreasing the amount of carmichael numbers taken,
+-- you can see that there are less and less false positives.
+-- Another point is that the charmichael list given in this excercise does not seem to be the entire list of 
+-- carmichael number.
+
+-- testCarmichael 8 8 
+-- "false positives:"
+-- [294409, 56052361, 118901521, 172947529, 216821881, 1299963601, 2301745249]
+
+-- testCarmichael 8 8 
+-- "false positives:"
+-- [294409, 56052361, 118901521, 172947529, 216821881, 228842209, 1299963601, 2301745249]
+
+-- testCarmichael 100 8 
+-- "false positives:"
+-- [118901521, 1299963601, 2301745249]
+
+-- testCarmichael 200 8 
+-- "false positives:"
+-- [118901521]
+
+-- testCarmichael 150 8 
+-- "false positives:"
+-- [172947529, 1299963601]
+
+
+-- Question 6
+
+-- What we see, while comparing the results of the primarlity test with fermat's test with those
+-- of Miller & Rabin is that there are significantly less false positive at the Miller & Rabin test
+-- results.
+
+testPrimeMR :: Int -> Int -> IO [Integer]
+testPrimeMR k n = falsePosit primeMR k (take n carmichael) []
+
+
+-- testPrimeMR 8 8
+-- "false positives:"
+-- []
+-- testPrimeMR 100 8
+-- "false positives:"
+-- []
+-- testPrimeMR 1 50
+-- "false positives:"
+-- [173947529,3296857440241,3878725359169,4507445537641]
+-- testPrimeMR 2 100
+-- "false positives:"
+-- [3711619793521]
+-- testPrimeMR 2 100
+-- "false positives:"
+-- []
+-- testPrimeMR 2 100
+-- "false positives:"
+-- [173032371289]
+-- testPrimeMR 2 100
+-- "false positives:"
+-- [173032371289]
+-- testPrimeMR 3 50
+-- "false positives:"
+-- [173032371289]
+-- testPrimeMR 3 100
+-- "false positives:"
+-- []
+-- testPrimeMR 3 100
+-- "false positives:"
+-- []
+-- testPrimeMR 3 100
+-- "false positives:"
+-- [77833567590769]
+
+
+
+-- Question 7
+
+
+
+runMersennesSearch :: Int -> Int -> IO [Integer]
+runMersennesSearch k n = findMersennes k (take n primes) []
+
+
+findMersennes :: Int -> [Integer] -> [Integer] -> IO [Integer]
+findMersennes k [] ls = do
+	print ("search finished resulting with: ")
+	return (reverse ls)
+findMersennes k (x:xs) ls = do
+	prime <- primeMR k (2^x -1) -- [|i<-[1..2000],]
+	if prime
+	then do
+		print (" searching for Mersennes...")
+		print ("found Mersenne: " ++ show x)
+		findMersennes k xs (x:ls)
+	else findMersennes k xs (ls)
+
+
+-- using the modular exponentiation function from excersize 1, running the function with 
+
+
+
+-- The following will terminate within several minutes:
+
+-- runMersennesSearch 2 400
+-- " searching for Mersennes..."
+-- "found Mersenne: 2"
+-- " searching for Mersennes..."
+-- "found Mersenne: 3"
+-- " searching for Mersennes..."
+-- "found Mersenne: 5"
+-- " searching for Mersennes..."
+-- "found Mersenne: 7"
+-- " searching for Mersennes..."
+-- "found Mersenne: 13"
+-- " searching for Mersennes..."
+-- "found Mersenne: 17"
+-- " searching for Mersennes..."
+-- "found Mersenne: 19"
+-- " searching for Mersennes..."
+-- "found Mersenne: 31"
+-- " searching for Mersennes..."
+-- "found Mersenne: 61"
+-- " searching for Mersennes..."
+-- "found Mersenne: 89"
+-- " searching for Mersennes..."
+-- "found Mersenne: 107"
+-- " searching for Mersennes..."
+-- "found Mersenne: 127"
+-- " searching for Mersennes..."
+-- "found Mersenne: 521"
+-- " searching for Mersennes..."
+-- "found Mersenne: 607"
+-- " searching for Mersennes..."
+-- "found Mersenne: 1279"
+-- " searching for Mersennes..."
+-- "found Mersenne: 2203"
+-- " searching for Mersennes..."
+-- "found Mersenne: 2281"
+-- [2,3,5,7,13,17,19,31,61,89,107,127, 521, 607,1279,2203,2281]
+
+
+-- This one will take some two hours, resulting with:
+
+-- runMersennesSearch 2 2000
+-- " searching for Mersennes..."
+-- "found Mersenne: 2"
+-- " searching for Mersennes..."
+-- "found Mersenne: 3"
+-- " searching for Mersennes..."
+-- "found Mersenne: 5"
+-- " searching for Mersennes..."
+-- "found Mersenne: 7"
+-- " searching for Mersennes..."
+-- "found Mersenne: 13"
+-- " searching for Mersennes..."
+-- "found Mersenne: 17"
+-- " searching for Mersennes..."
+-- "found Mersenne: 19"
+-- " searching for Mersennes..."
+-- "found Mersenne: 31"
+-- " searching for Mersennes..."
+-- "found Mersenne: 61"
+-- " searching for Mersennes..."
+-- "found Mersenne: 89"
+-- " searching for Mersennes..."
+-- "found Mersenne: 107"
+-- " searching for Mersennes..."
+-- "found Mersenne: 127"
+-- " searching for Mersennes..."
+-- "found Mersenne: 521"
+-- " searching for Mersennes..."
+-- "found Mersenne: 607"
+-- " searching for Mersennes..."
+-- "found Mersenne: 1279"
+-- " searching for Mersennes..."
+-- "found Mersenne: 2203"
+-- " searching for Mersennes..."
+-- "found Mersenne: 2281"
+-- " searching for Mersennes..."
+-- "found Mersenne: 3217"
+-- " searching for Mersennes..."
+-- "found Mersenne: 4253"
+-- " searching for Mersennes..."
+-- "found Mersenne: 4423"
+-- "search finished resulting with: " 
+-- <interactive>: getMBlocks: VirtualAlloc Mem_COMMIT failed: the paging file is too small 
+-- for this operation to complete
+
+-- according to the slides these are also indeed the first 20 Mersenne primes
