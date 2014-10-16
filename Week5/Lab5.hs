@@ -74,6 +74,16 @@ generatePositiveMinimalTest = do
   return (isMinimal node)
 
 
+mainMin :: IO()
+mainMin = hspec $ do
+    describe "minimality check" $ do
+        it "actually checks that the sudoku generator gives minimal problems" $do
+            sud <- genRandomSudoku
+            node <- genProblem sud
+            print (isMinimal node)
+
+
+
 -- Question 3
 genProblem3 :: Node -> IO Node
 genProblem3 n = do ys <- randomize xs
