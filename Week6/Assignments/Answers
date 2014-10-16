@@ -90,7 +90,7 @@ falsePosit fn k (x:xs) fps = do
 -- testComposite 2 100
 -- "false positives:"
 -- [4, 15]
--- testCompostestCompositetestCompositeite 2 100
+-- testComposite 2 100
 -- "false positives:"
 -- [28, 65]
 -- testComposite 3 100
