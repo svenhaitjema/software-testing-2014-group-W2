@@ -58,7 +58,7 @@ composite = filter (not.isPrime) [2..]
 -- Question 4
 
 
--- A problem noticed in fermat primality test is that it takes random base numbers between 1 and n.
+-- A problem noticed in fermat primality test is that it takes random base numbers between 1 and n-2.
 -- Including the number 1 in the possible checked bases can be seen as increasing the noise of the test
 -- as for base 1 exM will result with 1 for every given n.
 
